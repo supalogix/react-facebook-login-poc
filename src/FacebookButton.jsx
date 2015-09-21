@@ -1,5 +1,3 @@
-"use strict";
-
 import React from 'react';
 
 export default class FacebookButton extends React.Component {
@@ -22,15 +20,16 @@ export default class FacebookButton extends React.Component {
 
    onLogin(response) {
       var self = this;
-      self.FB.api('/me', function(response) {
+      this.FB.api('/me', function(response) {
+         var message = "Welcome " + response.name;
          self.setState({
-            message: JSON.stringify(response)
+            message: message
          });
       });
    }
 
    onLogout(response) {
-      self.setState({
+      this.setState({
          message: ""
       });
    }
