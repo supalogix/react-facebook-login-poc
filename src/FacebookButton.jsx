@@ -9,23 +9,27 @@ export default class FacebookButton extends React.Component {
       this.state = {
          message: ""
       };
+
    }
 
    componentDidMount() {
-      this.FB.Event.subscribe('auth.login', 
-         this.onLogin.bind(this));
       this.FB.Event.subscribe('auth.logout', 
          this.onLogout.bind(this));
+      this.FB.Event.subscribe('auth.statusChange', 
+         this.onStatusChange.bind(this));
    }
-
-   onLogin(response) {
+      
+   onStatusChange(response) {
       var self = this;
-      this.FB.api('/me', function(response) {
-         var message = "Welcome " + response.name;
-         self.setState({
-            message: message
-         });
-      });
+
+      if( response.status === "connected" ) {
+         this.FB.api('/me', function(response) {
+            var message = "Welcome " + response.name;
+            self.setState({
+               message: message
+            });
+         })
+      }
    }
 
    onLogout(response) {
